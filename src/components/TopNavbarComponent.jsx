@@ -9,8 +9,7 @@ export default function TopNavbarComponent() {
   };
 
   return (
-    <div className="flex justify-between items-center">
-      {/* search bar */}
+    <div className="flex justify-between items-center w-full">
       <form className="relative w-9/12 " onSubmit={handleSubmit}>
         {/* search button */}
         <button className="cursor-pointer">
@@ -24,6 +23,7 @@ export default function TopNavbarComponent() {
           className="w-full bg-white py-3 pl-14 pr-5 rounded-xl h-12 border-none focus:border-none focus:ring-0 focus:outline-custom-sky-blue"
         />
       </form>
+      
 
       {/* notification bell */}
       <div className="relative w-12 h-12 bg-white p-2.5 rounded-full">
