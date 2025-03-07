@@ -1,8 +1,10 @@
+import {format} from 'date-fns'
+
 export const learningMaterials = [
   {
     id: 1,
     image:
-      "https://i.pinimg.com/736x/ca/e1/b4/cae1b4f6b223fe5a7bb712b680cffa67.jpg",
+    "https://i.pinimg.com/736x/ca/e1/b4/cae1b4f6b223fe5a7bb712b680cffa67.jpg",
     title: "HTML5",
     postedAt: "2025/01/13",
     isFavorite: false,
@@ -101,3 +103,7 @@ export const learningMaterials = [
     isFavorite: true,
   },
 ];
+
+learningMaterials.forEach((item) => {
+  item.postedAt = format(new Date(item.postedAt), 'EEE, MMM dd, yyyy')
+})

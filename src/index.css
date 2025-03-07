@@ -16,7 +16,14 @@
   --color-light-gray: #f5f7f8;
   --color-primary-text: #2b343b;
   
+  
 
   /* config custom font */
   --font-rubik: "Rubik", "sans-serif";
+}
+
+@layer utilities {
+  .no-scrollbar::--webkit-scrollbar {
+    display: none;
+  }
 }
