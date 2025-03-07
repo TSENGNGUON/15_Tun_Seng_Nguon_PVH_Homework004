@@ -1,10 +1,11 @@
 
 import { sidebarList } from "../data/sidebarList";
 import { LogOutIcon } from "lucide-react";
+import '../index.css'
 
 export default function SidebarComponent() {
   return (
-    <div className="p-5 h-screen bg-white shadow-xl w-[20%] fixed">
+    <div className="p-5 h-screen bg-white shadow-xl w-[20%] fixed no-scrollbar">
       {/* logo */}
       <div className="flex gap-3 items-center p-5 border-b-2 border-b-gray-200">
         <img

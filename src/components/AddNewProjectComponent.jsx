@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
 import CardComponent from "./CardComponent";
+import '../index.css'
 
 export default function AddNewProjectComponent({inputed}) {
   const [projectName, setProjectName] = useState("");
@@ -8,58 +9,54 @@ export default function AddNewProjectComponent({inputed}) {
   const [progress, setProgress] = useState("");
   const [description, setDescription] = useState("");
   const [projects, setProjects] = useState([]);
+  const [errors, setErrors] = useState({})
   const searchData = projects.filter((e)=>
     e.projectName.toLowerCase().includes(inputed.toLowerCase()))
 
-const handleAddProject = (e) =>{
+  const handleAddProject = (e) => {
     e.preventDefault();
-    // Element
-    const projectNameO = document.getElementById('projectName');
-    const dueDateO = document.getElementById('dueDate'); 
-    const progressO = document.getElementById('progress');
-    
-    if (projectName === '' && dueDate === '' && progress === progress && description === '') { 
-      let projectNameValidate = document.getElementById('projectNameValidate');
-      projectNameValidate.innerHTML = "* Project Name is required.";
-      projectNameO.classList.add("border-2","border-red-500");
-      projectNameValidate.classList.add("text-red-500","text-sm");
-
-      let dueDateValidate = document.getElementById('DueDateValidate');
-      dueDateValidate.innerHTML = "* Due Date is required.";
-      dueDateO.classList.add("border-2", "border-red-500")
-      dueDateValidate.classList.add("text-red-500", "text-sm");
-
-      let progressValidate = document.getElementById('ProgressValidate')
-      progressValidate.innerHTML = "* Progress is required.";
-      progressO.classList.add("border-2", "border-red-500");
-      progressValidate.classList.add("text-red-500", "text-sm");
-    
-  }
-  if(projectName !== '' && dueDate !== '' && progress !== '' && description !== ''){
-    const addProject = {
-      "projectName": projectName,
-      "dueDate": dueDate,
-      "progress": progress,
-      "description": description
+  
+    let err = {};
+  
+    if (!projectName) {
+      err.projectName = "* Project Name is required.";
     }
+  
+    if (!dueDate) {
+      err.dueDate = "* Due Date is required.";
+    }
+  
+    if (!progress) {
+      err.progress = "* Progress is required.";
+    }
+  
+    if (!description) {
+      err.description = "* Description is required.";
+    }
+  
+    if (Object.keys(err).length > 0) {
+      setErrors(err);
+      return; // Stop execution if there are errors
+    }
+  
+    // No errors, proceed with adding the project
+    setErrors({}); // Clear previous errors
+    const addProject = {
+      projectName,
+      dueDate,
+      progress,
+      description,
+    };
+  
     setProjects([...projects, addProject]);
+  
+    // Reset form fields
     setProjectName('');
     setDueDate('');
     setProgress('');
     setDescription('');
-    projectNameO.classList.remove("border-2","border-red-500")
-    projectNameValidate.classList.remove("text-red-500","text-sm");
-    dueDateO.classList.remove("border-2", "border-red-500");
-    let dueDateValidate = document.getElementById('DueDateValidate');
-    dueDateValidate.innerHTML = "";
-    let progressValidate = document.getElementById('ProgressValidate')
-    progressValidate.innerHTML = "";
-    progressO.classList.remove("border-2", "border-red-500");
-    projectNameValidate.innerHTML = "";
-    
-  }
-
-}
+  };
+  
   return (
     <div >
       <button
@@ -70,7 +67,7 @@ const handleAddProject = (e) =>{
       >
         <Plus size={22} /> <span className="text-base">New Project</span>
       </button>
-      <div className="mt-40 flex  fixed left-[330px] w-[870px]  flex-wrap gap-5 overflow-auto h-[50vh] bg-[#f5f7f8]">
+      <div className="mt-40 flex no-scrollbar   fixed left-[330px] w-[870px]  flex-wrap gap-5 overflow-auto h-[50vh] bg-[#f5f7f8]">
       {searchData.map((project, index) => {
         return (
           <CardComponent 
@@ -122,55 +119,64 @@ const handleAddProject = (e) =>{
             <form className="p-4 md:p-5">
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
+                  <div className="flex items-center gap-2">
                   <label
                     htmlFor="projectName"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block text-sm font-medium text-gray-900 dark:text-white "
                   >
-                    Project Name
+                    Project Name 
                   </label>
+                  <span className="text-red-500 text-2xl">{errors.projectName && "*"}</span>
+                  </div>
                   <input
                     type="text"
                     name="projectName"
                     id="projectName"
                     value={projectName}
                     onChange={(e) => setProjectName(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className={`bg-gray-50 border border-gray-300 ${errors.projectName && 'border-2 border-red-500'} text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                     placeholder="Type Project Name"
                    
                   />
-                  <label id="projectNameValidate"></label>
+
+                  {errors.projectName && <label className="text-red-500">{errors.projectName}</label>}
+                 
                 </div>
 
-                <div className="col-span-2">
+                
+               
+               <div className="col-span-2">
                   <label
                     htmlFor="dueDate"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Due Date
+                    Due Date  <span className="text-red-500 text-2xl">{errors.dueDate && '*'}</span>
                   </label>
+                 
                   <input
                     type="date"
                     name="dueDate"
                     value={dueDate}
                     id="dueDate"
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className={`bg-gray-50 border border-gray-300 text-gray-900 ${errors.dueDate && 'border-2 border-red-500'} text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                   />
-                   <label id="DueDateValidate"></label>
+                   {errors.dueDate && <label className="text-red-500">{errors.dueDate}</label>}
                 </div>
+            
 
                 <div className="col-span-2">
                   <label
                     htmlFor="progress"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Progress
+                    Progress <span className="text-red-500 text-2xl">{errors.dueDate && '*'}</span>
                   </label>
                   <select
                     id="progress"
                     value={progress}
                     onChange={(e) => setProgress(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    className={`bg-gray-50 border border-gray-300 ${errors.progress && ' border-2 border-red-500'} text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                   >
                     <option defaultValue="">Select Progress</option>
                     <option value="100">100</option>
@@ -178,7 +184,7 @@ const handleAddProject = (e) =>{
                     <option value="50">50</option>
                     <option value="25">25</option>
                   </select>
-                  <label id="ProgressValidate"></label>
+                  {errors.progress && <label className="text-red-500">{errors.dueDate}</label>}
                 </div>
                 <div className="col-span-2">
                   <label

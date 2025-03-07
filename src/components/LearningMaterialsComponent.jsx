@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StarIcon as SolidStarIcon } from "@heroicons/react/24/solid";
 import { StarIcon as OutlineStarIcon } from "@heroicons/react/24/outline";
 import FilterComponent from "./FilterComponent";
+import '../index.css'
 import { learningMaterials } from "../data/learningMaterials";
 
 
@@ -31,7 +32,7 @@ export default function LearningMaterialsComponent() {
 
 
   return (
-    <div className="bg-white drop-shadow-lg rounded-2xl overflow-auto h-[80vh] w-[20%] fixed right-2 top-30">
+    <div className="bg-white drop-shadow-lg rounded-2xl overflow-auto h-[80vh] w-[20%] fixed right-2 top-30 no-scrollbar ">
       {/* calling filter component */}
       <FilterComponent 
       setSortedMaterials={setSortedMaterials}
@@ -46,9 +47,9 @@ export default function LearningMaterialsComponent() {
 
       {/* materials list */}
       {
-        sortedMaterials.map(item => {
+        sortedMaterials.map((item, index) => {
           return(
-            <div className="space-y-3">
+            <div key={index} className="space-y-3">
             <div className="bg-light-gray px-4 py-2 flex gap-5 items-center">
               <img
                 src={item.image}

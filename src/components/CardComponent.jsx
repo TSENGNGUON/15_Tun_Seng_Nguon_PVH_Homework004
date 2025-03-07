@@ -1,7 +1,32 @@
+
 import { EllipsisVertical } from "lucide-react";
+import { endOfWeek, differenceInDays, format } from "date-fns";
+
 import React from "react";
 
 export default function CardComponent({ dueDate, projectName, description, progress }) {
+  const getTimeLeft = (dueDate) => {
+    if (!dueDate) return "No due date set";
+  
+    const today = new Date();
+    const due = new Date(dueDate);
+    const timeDiff = due - today;
+  
+    if (timeDiff <= 0) return "Deadline passed";
+  
+    const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+  
+    if (daysLeft === 1) return "1 day left";
+    if (daysLeft < 7) return `${daysLeft} days left`;
+    
+    const weeksLeft = Math.ceil(daysLeft / 7);
+    return weeksLeft === 1 ? "1 week left" : `${weeksLeft} weeks left`;
+  };
+  
+
+  
+
+  
   return (
     <div className="w-[270px]">
       <div className="max-w-sm p-6 bg-white rounded-2xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -52,7 +77,7 @@ export default function CardComponent({ dueDate, projectName, description, progr
         {/* deadline */}
         <div className="flex justify-end">
           <p className="font-medium bg-light-gray py-1.5 px-4 rounded-lg max-w-28 text-center">
-            1 day left
+            {getTimeLeft(dueDate)}
           </p>
         </div>
       </div>
